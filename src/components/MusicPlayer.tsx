@@ -6,6 +6,7 @@ const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const tweenRef = useRef<gsap.core.Tween | null>(null)
 
   // Auto play when component mounts (or when user interacts with page if blocked)
   useEffect(() => {
@@ -26,23 +27,27 @@ const MusicPlayer = () => {
 
     // Animation for the rotating disc
     if (containerRef.current) {
-      gsap.to(containerRef.current, {
+      tweenRef.current = gsap.to(containerRef.current, {
         rotation: 360,
         duration: 8,
         repeat: -1,
         ease: 'linear',
-        paused: !isPlaying
+        paused: true // Start paused, control via isPlaying effect
       })
+    }
+    
+    return () => {
+      tweenRef.current?.kill()
     }
   }, [])
 
   useEffect(() => {
     // Control rotation animation based on playing state
-    if (containerRef.current) {
+    if (tweenRef.current) {
       if (isPlaying) {
-        gsap.globalTimeline.resume()
+        tweenRef.current.resume()
       } else {
-        gsap.globalTimeline.pause()
+        tweenRef.current.pause()
       }
     }
   }, [isPlaying])

@@ -1,4 +1,5 @@
-import { useRef, useState, MouseEvent, ReactNode, CSSProperties, forwardRef, useImperativeHandle } from 'react'
+import { useRef, useState, forwardRef, useImperativeHandle } from 'react'
+import type { MouseEvent, ReactNode, CSSProperties } from 'react'
 import gsap from 'gsap'
 
 interface TiltCardProps {

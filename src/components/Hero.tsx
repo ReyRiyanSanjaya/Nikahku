@@ -84,26 +84,23 @@ const Hero: React.FC<HeroProps> = ({ onOpen }) => {
       left: 0,
       width: '100%',
       height: '100vh',
-      backgroundColor: '#fdfbf7',
       zIndex: 9999,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundImage: 'url("https://images.unsplash.com/photo-1520854221256-17451cc330e7?q=80&w=2000&auto=format&fit=crop")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
     }}>
+      {/* Subtle overlay to ensure text readability but keep 3D visible */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(253, 251, 247, 0.7)',
-        backdropFilter: 'blur(5px)'
+        background: 'radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(253, 251, 247, 0.4) 100%)',
+        backdropFilter: 'blur(2px)'
       }}></div>
 
-      <TiltCard ref={contentRef} className="glass-card hero-card" style={{ maxWidth: '600px', width: '90%', textAlign: 'center', padding: '70px 40px' }}>
+      <TiltCard ref={contentRef} className="glass-card hero-card" style={{ maxWidth: '600px', width: '90%', textAlign: 'center', padding: '70px 40px', background: 'rgba(255, 255, 255, 0.4)', border: '1px solid rgba(255, 255, 255, 0.6)' }}>
         <h3 style={{ letterSpacing: '6px', textTransform: 'uppercase', marginBottom: '20px', fontSize: '0.85rem', color: '#666', fontWeight: 600, fontFamily: 'Montserrat' }}>The Royal Wedding of</h3>
         <h1 className="gold-text script-font hero-title" style={{ fontSize: '5rem', lineHeight: 1.1, marginBottom: '15px' }}>Wulan & Fariz</h1>
         

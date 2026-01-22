@@ -34,7 +34,7 @@ const FloralDecor = () => {
   const floralUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Corner_Ornament_Gold_Up_Left.png/500px-Corner_Ornament_Gold_Up_Left.png";
 
   return (
-    <div ref={containerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
+    <div ref={containerRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 50 }}>
       {/* Top Left Corner */}
       <div className="floral-corner large" style={{ position: 'absolute', top: -40, left: -40, width: '280px', height: '280px', opacity: 0.6 }}>
         <img 

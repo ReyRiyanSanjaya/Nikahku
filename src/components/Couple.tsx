@@ -8,8 +8,6 @@ gsap.registerPlugin(ScrollTrigger)
 
 const Couple = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const brideRef = useRef<HTMLDivElement>(null)
-  const groomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {

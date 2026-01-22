@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { FaHeart } from 'react-icons/fa'
 
 const FloatingHearts = () => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -45,7 +44,7 @@ const FloatingHearts = () => {
   return (
     <div ref={containerRef} style={{ 
       position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', 
-      pointerEvents: 'none', zIndex: 0, overflow: 'hidden' 
+      pointerEvents: 'none', zIndex: 2, overflow: 'hidden' 
     }}>
     </div>
   )

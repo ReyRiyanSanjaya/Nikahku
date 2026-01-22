@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { FaExpand, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import Carousel3D from './Carousel3D'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -11,9 +11,9 @@ const images = [
   'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=600&auto=format',
   'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=600&auto=format',
   'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600&auto=format',
-  'https://images.unsplash.com/photo-1522673607200-1645062cd958?q=80&w=600&auto=format',
+  'https://images.unsplash.com/photo-1511285560982-1351cdeb9821?q=80&w=600&auto=format',
   'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=600&auto=format',
-  'https://images.unsplash.com/photo-1520854221256-17451cc330e7?q=80&w=600&auto=format',
+  'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=600&auto=format',
   'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=600&auto=format',
   'https://images.unsplash.com/photo-1516961642265-531546e84af2?q=80&w=600&auto=format',
 ]
