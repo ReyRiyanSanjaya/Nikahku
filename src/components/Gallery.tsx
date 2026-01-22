@@ -8,13 +8,13 @@ gsap.registerPlugin(ScrollTrigger)
 
 const images = [
   'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600&auto=format',
-  'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=600&auto=format', // Replaced broken link
-  'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=600&auto=format', // Vertical
-  'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600&auto=format', // Replaced broken link 2
-  'https://images.unsplash.com/photo-1511285560982-1351cdeb9821?q=80&w=600&auto=format', // Replaced broken link 4
+  'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=600&auto=format',
+  'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=600&auto=format',
+  'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600&auto=format',
+  'https://images.unsplash.com/photo-1522673607200-1645062cd958?q=80&w=600&auto=format',
   'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=600&auto=format',
-  'https://images.unsplash.com/photo-1519225421980-715cb0202128?q=80&w=600&auto=format', // Replaced broken link 5
-  'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=600&auto=format', // Replaced broken link 3
+  'https://images.unsplash.com/photo-1520854221256-17451cc330e7?q=80&w=600&auto=format',
+  'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=600&auto=format',
   'https://images.unsplash.com/photo-1516961642265-531546e84af2?q=80&w=600&auto=format',
 ]
 
@@ -67,7 +67,9 @@ const Gallery = () => {
   return (
     <div ref={sectionRef} className="section container" style={{ textAlign: 'center' }}>
       <h2 className="anim-item gold-text script-font section-title-large" style={{ marginBottom: '10px' }}>Galeri Bahagia</h2>
-      <p className="anim-item" style={{ marginBottom: '30px', letterSpacing: '1px', textTransform: 'uppercase', fontSize: '0.9rem', color: '#888' }}>Momen indah perjalanan cinta kami</p>
+      <p className="anim-item" style={{ marginBottom: '30px', letterSpacing: '1px', fontSize: '1.1rem', color: '#888', fontFamily: 'Cormorant Garamond', fontStyle: 'italic' }}>
+        "Setiap detik bersamamu adalah kenangan yang abadi."
+      </p>
 
       {/* 3D Carousel Section */}
       <div className="anim-item carousel-container">

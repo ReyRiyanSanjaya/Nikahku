@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { FaMapMarkerAlt, FaClock, FaCalendarAlt } from 'react-icons/fa'
+import TiltCard from './TiltCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -47,44 +48,57 @@ const EventDetail = () => {
   }, [])
 
   return (
-    <div ref={sectionRef} className="section container" style={{ textAlign: 'center' }}>
-      <h2 className="anim-item gold-text script-font event-title section-title-large">Rangkaian Acara</h2>
+    <div ref={sectionRef} className="section container" style={{ textAlign: 'center', padding: '100px 20px' }}>
+      <h2 className="anim-item gold-text script-font section-title-large" style={{ fontSize: '3.5rem', marginBottom: '10px' }}>Rangkaian Acara</h2>
+      <p className="anim-item" style={{ maxWidth: '600px', margin: '0 auto 60px', color: '#777', fontFamily: 'Cormorant Garamond', fontSize: '1.1rem', fontStyle: 'italic' }}>
+         Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan acara pernikahan putra-putri kami:
+      </p>
 
       <div className="anim-item" style={{ marginBottom: '80px' }}>
-        <div className="timer-container" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+        <div className="timer-container" style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap' }}>
           {Object.entries(timeLeft).map(([unit, value]) => (
-            <div key={unit} className="timer-box">
-              <div className="gold-text timer-value">
+            <div key={unit} className="timer-box" style={{ textAlign: 'center' }}>
+              <div className="gold-text timer-value" style={{ fontSize: '3.5rem', fontWeight: '400', lineHeight: 1, fontFamily: 'Cormorant Garamond' }}>
                 {String(value).padStart(2, '0')}
               </div>
-              <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.7rem', marginTop: '5px', color: '#666' }}>{unit}</div>
+              <div style={{ textTransform: 'uppercase', letterSpacing: '3px', fontSize: '0.75rem', marginTop: '10px', color: '#888', fontWeight: 600 }}>{unit}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="event-grid">
+      <div className="event-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', maxWidth: '1000px', margin: '0 auto' }}>
         
         {/* Akad Nikah */}
-        <div className="anim-item glass-card event-card">
-          <div className="event-card-badge">
-            08:00 WIB
-          </div>
-          <h3 className="gold-text event-card-title">Akad Nikah</h3>
-          <div style={{ fontSize: '1rem', lineHeight: '1.8', color: '#555' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-              <FaCalendarAlt color="#bf953f" />
-              <span>Sabtu, 31 Januari 2026</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-              <FaClock color="#bf953f" />
-              <span>08.00 WIB - Selesai</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px', marginBottom: '25px' }}>
-              <FaMapMarkerAlt color="#bf953f" style={{ marginTop: '5px' }} />
+        <TiltCard className="anim-item glass-card event-card" style={{ padding: '50px 40px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ 
+              position: 'absolute', top: 0, left: 0, width: '100%', height: '5px', 
+              background: 'linear-gradient(to right, #bf953f, #fcf6ba, #bf953f)' 
+          }}></div>
+          
+          <h3 className="gold-text" style={{ fontSize: '2.5rem', fontFamily: 'Cormorant Garamond', marginBottom: '30px' }}>Akad Nikah</h3>
+          
+          <div style={{ fontSize: '1rem', lineHeight: '1.8', color: '#555', textAlign: 'left' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '15px' }}>
+              <FaCalendarAlt color="#bf953f" size={20} />
               <div>
-                <span style={{ fontWeight: 'bold', display: 'block', color: '#333' }}>Masjid Kilat Kaduagung</span>
-                <span style={{ fontSize: '0.9rem' }}>Jl. Gunung Kencana, Kaduagung Tim., Kec. Cibadak, Kabupaten Lebak, Banten</span>
+                 <span style={{ display: 'block', fontSize: '0.85rem', textTransform: 'uppercase', color: '#999', letterSpacing: '1px' }}>Tanggal</span>
+                 <span style={{ fontWeight: 500, color: '#333' }}>Sabtu, 31 Januari 2026</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '15px' }}>
+              <FaClock color="#bf953f" size={20} />
+              <div>
+                 <span style={{ display: 'block', fontSize: '0.85rem', textTransform: 'uppercase', color: '#999', letterSpacing: '1px' }}>Waktu</span>
+                 <span style={{ fontWeight: 500, color: '#333' }}>08.00 WIB - Selesai</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '30px' }}>
+              <FaMapMarkerAlt color="#bf953f" size={20} style={{ marginTop: '5px' }} />
+              <div>
+                <span style={{ display: 'block', fontSize: '0.85rem', textTransform: 'uppercase', color: '#999', letterSpacing: '1px' }}>Lokasi</span>
+                <span style={{ fontWeight: '600', display: 'block', color: '#333', fontSize: '1.1rem', marginBottom: '5px' }}>Masjid Kilat Kaduagung</span>
+                <span style={{ fontSize: '0.9rem', color: '#666' }}>Jl. Gunung Kencana, Kaduagung Tim., Kec. Cibadak, Kabupaten Lebak, Banten</span>
               </div>
             </div>
           </div>
@@ -95,28 +109,38 @@ const EventDetail = () => {
           >
             <FaMapMarkerAlt /> Lihat Lokasi
           </button>
-        </div>
+        </TiltCard>
 
         {/* Resepsi */}
-        <div className="anim-item glass-card event-card">
-           <div className="event-card-badge">
-            11:00 WIB
-          </div>
-          <h3 className="gold-text event-card-title">Resepsi</h3>
-          <div style={{ fontSize: '1rem', lineHeight: '1.8', color: '#555' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-              <FaCalendarAlt color="#bf953f" />
-              <span>Sabtu, 31 Januari 2026</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-              <FaClock color="#bf953f" />
-              <span>11.00 WIB - Selesai</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px', marginBottom: '25px' }}>
-              <FaMapMarkerAlt color="#bf953f" style={{ marginTop: '5px' }} />
+        <TiltCard className="anim-item glass-card event-card" style={{ padding: '50px 40px', position: 'relative', overflow: 'hidden' }}>
+           <div style={{ 
+              position: 'absolute', top: 0, left: 0, width: '100%', height: '5px', 
+              background: 'linear-gradient(to right, #bf953f, #fcf6ba, #bf953f)' 
+          }}></div>
+
+          <h3 className="gold-text" style={{ fontSize: '2.5rem', fontFamily: 'Cormorant Garamond', marginBottom: '30px' }}>Resepsi</h3>
+          
+          <div style={{ fontSize: '1rem', lineHeight: '1.8', color: '#555', textAlign: 'left' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '15px' }}>
+              <FaCalendarAlt color="#bf953f" size={20} />
               <div>
-                <span style={{ fontWeight: 'bold', display: 'block', color: '#333' }}>Kediaman Mempelai Wanita</span>
-                <span style={{ fontSize: '0.9rem' }}>Jl. Gunung Kencana, Kaduagung Tim., Kec. Cibadak, Kabupaten Lebak, Banten</span>
+                 <span style={{ display: 'block', fontSize: '0.85rem', textTransform: 'uppercase', color: '#999', letterSpacing: '1px' }}>Tanggal</span>
+                 <span style={{ fontWeight: 500, color: '#333' }}>Sabtu, 31 Januari 2026</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '15px' }}>
+              <FaClock color="#bf953f" size={20} />
+              <div>
+                 <span style={{ display: 'block', fontSize: '0.85rem', textTransform: 'uppercase', color: '#999', letterSpacing: '1px' }}>Waktu</span>
+                 <span style={{ fontWeight: 500, color: '#333' }}>11.00 WIB - Selesai</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '30px' }}>
+              <FaMapMarkerAlt color="#bf953f" size={20} style={{ marginTop: '5px' }} />
+              <div>
+                <span style={{ display: 'block', fontSize: '0.85rem', textTransform: 'uppercase', color: '#999', letterSpacing: '1px' }}>Lokasi</span>
+                <span style={{ fontWeight: '600', display: 'block', color: '#333', fontSize: '1.1rem', marginBottom: '5px' }}>Kediaman Mempelai Wanita</span>
+                <span style={{ fontSize: '0.9rem', color: '#666' }}>Jl. Gunung Kencana, Kaduagung Tim., Kec. Cibadak, Kabupaten Lebak, Banten</span>
               </div>
             </div>
           </div>
@@ -127,7 +151,7 @@ const EventDetail = () => {
           >
             <FaMapMarkerAlt /> Lihat Lokasi
           </button>
-        </div>
+        </TiltCard>
 
       </div>
     </div>

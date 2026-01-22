@@ -1,55 +1,363 @@
-import { Canvas } from '@react-three/fiber'
-import { Float, Sparkles, PerspectiveCamera, ContactShadows } from '@react-three/drei'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Float, Sparkles, PerspectiveCamera, Stars, Text, Image, Environment, MeshTransmissionMaterial, CameraShake } from '@react-three/drei'
+import { useRef, useMemo, useState } from 'react'
+import * as THREE from 'three'
 
-function FloatingShapes() {
+function CameraRig() {
+  const { camera, pointer } = useThree()
+  
+  useFrame((state) => {
+    // Calculate scroll progress based on window scroll
+    const scrollY = window.scrollY
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+    const progress = maxScroll > 0 ? scrollY / maxScroll : 0
+    
+    // Move camera forward based on scroll
+    // Start at z=8 (entrance), move deep into the hall (z=-30)
+    const targetZ = 8 - (progress * 45) // Go a bit further to see the couple
+    
+    // Smooth movement for Z
+    camera.position.z += (targetZ - camera.position.z) * 0.05
+    
+    // Add mouse parallax (look around)
+    // Small sway based on pointer position
+    const targetX = pointer.x * 0.5
+    const targetY = pointer.y * 0.5
+    
+    camera.position.x += (targetX - camera.position.x) * 0.05
+    camera.position.y += (targetY - camera.position.y) * 0.05
+    
+    // Look slightly ahead
+    camera.lookAt(0, 0, camera.position.z - 10)
+  })
+  
+  return null
+}
+
+function FlowerBush({ position }: { position: [number, number, number] }) {
+  const flowers = useMemo(() => {
+    return Array.from({ length: 15 }).map(() => ({
+      position: [
+        (Math.random() - 0.5) * 1.5,
+        (Math.random() - 0.5) * 1,
+        (Math.random() - 0.5) * 1.5
+      ] as [number, number, number],
+      scale: 0.2 + Math.random() * 0.3,
+      color: Math.random() > 0.5 ? "#ffb7b2" : "#ffd1dc"
+    }))
+  }, [])
+
+  return (
+    <group position={position}>
+      {flowers.map((f, i) => (
+        <mesh key={i} position={f.position} rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}>
+          <sphereGeometry args={[f.scale, 8, 8]} />
+          <meshStandardMaterial color={f.color} roughness={0.5} />
+        </mesh>
+      ))}
+    </group>
+  )
+}
+
+function FlowerRoad() {
+  // Create clusters of flowers along the aisle
+  const clusters = useMemo(() => {
+    const items = []
+    for (let z = 0; z > -40; z -= 3) {
+      // Left side
+      items.push({ position: [-4.5, -2, z] as [number, number, number] })
+      // Right side
+      items.push({ position: [4.5, -2, z] as [number, number, number] })
+    }
+    return items
+  }, [])
+
   return (
     <group>
-      <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
-        <mesh position={[2, 1, -3]} rotation={[0, Math.PI / 4, 0]}>
-          <torusGeometry args={[1.2, 0.1, 16, 100]} />
-          <meshStandardMaterial color="#d4af37" roughness={0.1} metalness={0.8} />
-        </mesh>
-      </Float>
-      
-      <Float speed={2} rotationIntensity={1.5} floatIntensity={1.5}>
-        <mesh position={[-2, -1, -4]} rotation={[Math.PI / 3, 0, 0]}>
-          <torusGeometry args={[0.9, 0.08, 16, 100]} />
-          <meshStandardMaterial color="#d4af37" roughness={0.1} metalness={0.8} />
-        </mesh>
-      </Float>
+      {clusters.map((cluster, i) => (
+        <FlowerBush key={i} position={cluster.position} />
+      ))}
+    </group>
+  )
+}
 
-      <Float speed={1} rotationIntensity={0.5} floatIntensity={1}>
-        <mesh position={[0, 3, -5]}>
-          <sphereGeometry args={[0.3, 32, 32]} />
-          <meshStandardMaterial color="#fff" roughness={0.2} metalness={0.5} />
-        </mesh>
-      </Float>
+function CoupleDisplay() {
+  return (
+    <group position={[0, 0, -38]}>
+      {/* Main Frame */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[6, 4, 0.2]} />
+        <meshStandardMaterial color="#bf953f" metalness={0.8} roughness={0.2} />
+      </mesh>
+      
+      {/* Inner Picture Area with Image */}
+      <Image 
+        url="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop"
+        position={[0, 0, 0.11]}
+        scale={[5.5, 3.5, 1]}
+        transparent
+        opacity={0.9}
+      />
+      
+      {/* Text Overlay */}
+      <Text
+        position={[0, 0.5, 0.12]}
+        fontSize={0.25}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.02}
+        outlineColor="#bf953f"
+      >
+        The Wedding Of
+      </Text>
+      
+      <Text
+        position={[0, -0.5, 0.12]}
+        fontSize={0.5}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+        font="https://fonts.gstatic.com/s/greatvibes/v14/RWmMoKWR9v4ksMfaWd_JN9xliaQ.woff"
+        outlineWidth={0.02}
+        outlineColor="#bf953f"
+      >
+        Wulan & Fariz
+      </Text>
+      
+      {/* Decorative Lights around frame */}
+      <pointLight position={[0, 2, 1]} intensity={1} color="#ffd1dc" distance={5} />
+    </group>
+  )
+}
+
+function WeddingAisle() {
+  const items = useMemo(() => Array.from({ length: 12 }), [])
+  
+  return (
+    <group>
+      {/* Reflective Floor */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.5, -15]}>
+        <planeGeometry args={[12, 60]} />
+        <meshStandardMaterial 
+          color="#fcfbf7" 
+          roughness={0.1} 
+          metalness={0.1}
+        />
+      </mesh>
+      
+      {items.map((_, i) => (
+        <group key={i} position={[0, -0.5, -i * 5]}>
+            {/* Golden Arch */}
+            <mesh position={[0, 2, 0]}>
+                <torusGeometry args={[3.5, 0.15, 16, 100, Math.PI]} />
+                {/* Modern Glass/Crystal Material */}
+                <MeshTransmissionMaterial
+                  backside
+                  backsideThickness={5}
+                  thickness={2}
+                  roughness={0}
+                  transmission={1}
+                  ior={1.5}
+                  chromaticAberration={1}
+                  anisotropy={20}
+                  distortion={0.2}
+                  distortionScale={0.3}
+                  temporalDistortion={0.5}
+                  color="#bf953f"
+                  attenuationColor="#ffffff"
+                  attenuationDistance={0.5}
+                />
+            </mesh>
+            
+            {/* Pillars Left */}
+            <mesh position={[-3.5, 0, 0]}>
+                <cylinderGeometry args={[0.3, 0.4, 4, 32]} />
+                <meshStandardMaterial color="#fff" roughness={0.3} />
+            </mesh>
+             {/* Base Left */}
+             <mesh position={[-3.5, -2, 0]}>
+                <boxGeometry args={[0.8, 0.4, 0.8]} />
+                <meshStandardMaterial color="#fff" roughness={0.3} />
+            </mesh>
+
+            {/* Pillars Right */}
+            <mesh position={[3.5, 0, 0]}>
+                <cylinderGeometry args={[0.3, 0.4, 4, 32]} />
+                <meshStandardMaterial color="#fff" roughness={0.3} />
+            </mesh>
+             {/* Base Right */}
+             <mesh position={[3.5, -2, 0]}>
+                <boxGeometry args={[0.8, 0.4, 0.8]} />
+                <meshStandardMaterial color="#fff" roughness={0.3} />
+            </mesh>
+            
+            {/* Hanging Lanterns (Simulated) */}
+            <mesh position={[0, 3.2, 0]}>
+               <sphereGeometry args={[0.15, 16, 16]} />
+               <meshStandardMaterial emissive="#fff" emissiveIntensity={2} color="#fff" />
+            </mesh>
+        </group>
+      ))}
+      
+      {/* Side Decorations - Floating Frames */}
+      {items.map((_, i) => (
+        <group key={`frame-${i}`} position={[i % 2 === 0 ? -5 : 5, 1, -i * 5 + 2.5]}>
+           <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+             <mesh rotation={[0, i % 2 === 0 ? 0.5 : -0.5, 0]}>
+               <boxGeometry args={[0.1, 3, 2]} />
+               <meshStandardMaterial color="#bf953f" metalness={0.8} roughness={0.1} wireframe />
+             </mesh>
+           </Float>
+        </group>
+      ))}
+    </group>
+  )
+}
+
+function Petal({ position, color }: { position: [number, number, number], color: string }) {
+  const meshRef = useRef<THREE.Mesh>(null)
+  const [speed] = useState(() => 0.02 + Math.random() * 0.05)
+  const [rotationAxis] = useState(() => new THREE.Vector3(Math.random(), Math.random(), Math.random()).normalize())
+  const [rotationSpeed] = useState(() => Math.random() * 0.05)
+  const [swayOffset] = useState(() => Math.random() * Math.PI * 2)
+  
+  // Custom petal shape
+  const petalShape = useMemo(() => {
+    const shape = new THREE.Shape()
+    shape.moveTo(0, 0)
+    // Create a natural petal curve
+    shape.bezierCurveTo(0.1, 0.1, 0.2, 0.3, 0, 0.5)
+    shape.bezierCurveTo(-0.2, 0.3, -0.1, 0.1, 0, 0)
+    return shape
+  }, [])
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      // Fall movement
+      meshRef.current.position.y -= speed
+      
+      // Swaying movement
+      const t = state.clock.getElapsedTime()
+      meshRef.current.position.x += Math.sin(t * 1.5 + swayOffset) * 0.01
+      meshRef.current.position.z += Math.cos(t * 1 + swayOffset) * 0.005
+      
+      // Rotation
+      meshRef.current.rotateOnAxis(rotationAxis, rotationSpeed)
+      
+      // Reset position when out of view
+      if (meshRef.current.position.y < -15) {
+        meshRef.current.position.y = 15
+        meshRef.current.position.x = (Math.random() - 0.5) * 20
+        meshRef.current.position.z = (Math.random() - 0.5) * 15
+        // Reset rotation
+        meshRef.current.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI)
+      }
+    }
+  })
+
+  return (
+    <mesh ref={meshRef} position={position} rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}>
+      <shapeGeometry args={[petalShape]} />
+      <meshStandardMaterial 
+        color={color} 
+        side={THREE.DoubleSide} 
+        transparent 
+        opacity={0.8} 
+        roughness={0.5}
+        metalness={0.1}
+      />
+    </mesh>
+  )
+}
+
+function FloatingPetals() {
+  const count = 80 // Increased count
+  const colors = ["#ffb7b2", "#ffd1dc", "#ff9e99", "#fff0f5", "#ffffff"]
+  
+  const petals = useMemo(() => {
+    return Array.from({ length: count }).map(() => ({
+      position: [
+        (Math.random() - 0.5) * 25,
+        (Math.random() - 0.5) * 30,
+        (Math.random() * 30) - 15
+      ] as [number, number, number],
+      color: colors[Math.floor(Math.random() * colors.length)]
+    }))
+  }, [])
+  
+  return (
+    <group>
+      {petals.map((petal, i) => (
+        <Petal key={i} position={petal.position} color={petal.color} />
+      ))}
+    </group>
+  )
+}
+
+function ParticleField() {
+  const pointsRef = useRef<THREE.Points>(null)
+  
+  useFrame((state) => {
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y = state.clock.getElapsedTime() * 0.05
+    }
+  })
+
+  return (
+    <group>
+      <Stars radius={100} depth={50} count={2000} factor={4} saturation={0} fade speed={1} />
+      <Sparkles 
+        count={300} 
+        scale={12} 
+        size={3} 
+        speed={0.4} 
+        opacity={0.6} 
+        color="#d4af37"
+      />
+      <Sparkles 
+        count={100} 
+        scale={10} 
+        size={5} 
+        speed={0.2} 
+        opacity={0.3} 
+        color="#fff"
+      />
     </group>
   )
 }
 
 export default function Background3D() {
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', background: 'linear-gradient(to bottom, #fdfbf7, #f5efe6)' }}>
-      <Canvas>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', background: 'radial-gradient(circle at center, #fdfbf7 0%, #f7f1e3 100%)' }}>
+      <Canvas gl={{ antialias: true, alpha: true }}>
         <fog attach="fog" args={['#fdfbf7', 5, 20]} />
-        <PerspectiveCamera makeDefault position={[0, 0, 8]} />
-        <ambientLight intensity={0.5} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#d4af37" />
+        <PerspectiveCamera makeDefault position={[0, 0, 8]} fov={60} />
+        <CameraRig />
         
-        <Sparkles 
-          count={150} 
-          scale={12} 
-          size={4} 
-          speed={0.4} 
-          opacity={0.7} 
-          color="#d4af37"
+        <ambientLight intensity={0.8} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} color="#fff" />
+        <pointLight position={[-10, -5, -5]} intensity={1} color="#d4af37" />
+        
+        <ParticleField />
+        <WeddingAisle />
+        <FlowerRoad />
+        <CoupleDisplay />
+        <FloatingPetals />
+        
+        {/* Environment for realistic reflections */}
+        <Environment preset="city" blur={0.8} />
+        
+        {/* Subtle Camera Shake for realism */}
+        <CameraShake 
+          maxYaw={0.01} 
+          maxPitch={0.01} 
+          maxRoll={0.01} 
+          yawFrequency={0.1} 
+          pitchFrequency={0.1} 
+          rollFrequency={0.1} 
+          intensity={0.5} 
         />
-        
-        <FloatingShapes />
-        
-        <ContactShadows resolution={1024} scale={20} blur={2} opacity={0.25} far={10} color="#8a6c1e" />
       </Canvas>
     </div>
   )

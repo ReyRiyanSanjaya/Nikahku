@@ -40,10 +40,10 @@ const RSVP = () => {
         
         {!isSubmitted ? (
           <>
-            <h2 className="gold-text script-font rsvp-title section-title-large" style={{ marginBottom: '10px' }}>RSVP</h2>
-            <p className="rsvp-subtitle" style={{ marginBottom: '40px', fontSize: '1.1rem', color: '#666' }}>
-              Kehadiran Anda adalah kado terindah bagi kami. <br/>
-              Mohon konfirmasi kehadiran Anda.
+            <h2 className="gold-text script-font rsvp-title section-title-large" style={{ marginBottom: '10px' }}>RSVP & Wishes</h2>
+            <p className="rsvp-subtitle" style={{ marginBottom: '40px', fontSize: '1.1rem', color: '#666', fontFamily: 'Cormorant Garamond' }}>
+              Kehadiran dan doa restu Anda adalah kado terindah bagi kami. <br/>
+              Mohon konfirmasi kehadiran Anda untuk berbagi kebahagiaan bersama.
             </p>
             
             <form ref={formRef} onSubmit={handleSubmit} className="rsvp-form" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -65,7 +65,7 @@ const RSVP = () => {
               
               <div style={{ position: 'relative' }}>
                 <FaComment style={{ position: 'absolute', left: '15px', top: '20px', color: '#d4af37', zIndex: 1 }} />
-                <textarea placeholder="Ucapan & Doa Restu" rows={4} className="glass-input" style={{ paddingLeft: '45px', resize: 'vertical' }}></textarea>
+                <textarea placeholder="Tuliskan ucapan & doa restu Anda..." rows={4} className="glass-input" style={{ paddingLeft: '45px', resize: 'vertical' }}></textarea>
               </div>
               
               <button type="submit" className="btn" style={{ marginTop: '10px', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>

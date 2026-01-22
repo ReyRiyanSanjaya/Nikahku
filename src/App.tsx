@@ -2,11 +2,15 @@ import { useState, useEffect } from 'react';
 import Background3D from './components/Background3D';
 import Hero from './components/Hero';
 import Quote from './components/Quote';
+import LoveStory from './components/LoveStory';
 import Couple from './components/Couple';
 import EventDetail from './components/EventDetail';
 import Gallery from './components/Gallery';
+import WeddingGift from './components/WeddingGift';
 import RSVP from './components/RSVP';
 import FloralDecor from './components/FloralDecor';
+import MusicPlayer from './components/MusicPlayer';
+import FloatingHearts from './components/FloatingHearts';
 import BottomBar from './components/BottomBar';
 import './style.css';
 
@@ -27,6 +31,7 @@ function App() {
       <div className="grain-overlay"></div>
       <Background3D />
       <FloralDecor />
+      <FloatingHearts />
       
       <Hero onOpen={() => setIsOpen(true)} />
       
@@ -38,9 +43,11 @@ function App() {
         pointerEvents: isOpen ? 'all' : 'none'
       }}>
         <div id="home"><Quote /></div>
+        <div id="lovestory"><LoveStory /></div>
         <div id="couple"><Couple /></div>
         <div id="event"><EventDetail /></div>
         <div id="gallery"><Gallery /></div>
+        <div id="gift"><WeddingGift /></div>
         <div id="rsvp"><RSVP /></div>
         
         <footer style={{ textAlign: 'center', padding: '20px', fontSize: '0.8rem', color: '#666', marginBottom: '80px' }}>
@@ -48,7 +55,12 @@ function App() {
         </footer>
       </div>
 
-      {isOpen && <BottomBar />}
+      {isOpen && (
+        <>
+          <MusicPlayer />
+          <BottomBar />
+        </>
+      )}
     </div>
   );
 }
